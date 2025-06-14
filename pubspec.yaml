@@ -1,5 +1,5 @@
 name: flutter_universal_downloader
-description: "A robust Flutter plugin for universal file downloads, offering reliable background operations with Android foreground service support, real-time progress updates, and easy cancellation."
+description: "A robust Flutter plugin for universal file downloading with Android foreground service support, real-time progress, and cancellation. Ideal for resilient, user-friendly downloads."
 version: 0.0.2
 homepage: https://github.com/importUsernameDev/flutter_universal_downloader
 repository: https://github.com/importUsernameDev/flutter_universal_downloader
