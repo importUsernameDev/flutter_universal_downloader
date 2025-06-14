@@ -10,9 +10,9 @@
 
 <!-- Replace the link below with your actual screenshot or GIF -->
 <p align="center">
-  <img src="main/example/screenshots/IMG_20250614_193823.jpg" alt="Example app screenshot" width="400"/>
-  <img src="main/example/screenshots/Screenshot_2025-06-14-19-33-25-57_57be3378ac0cedb7a6848329a3b308c3.jpg" alt="Example app screenshot" width="400"/>
-  <img src="main/example/screenshots/Screenshot_2025-06-14-19-33-39-24_57be3378ac0cedb7a6848329a3b308c3.jpg" alt="Example app screenshot" width="400"/>
+  <img src="main/example/screenshots/IMG_20250614_193823.jpg" width="200"/>
+  <img src="main/example/screenshots/Screenshot_2025-06-14-19-33-25-57_57be3378ac0cedb7a6848329a3b308c3.jpg" width="200"/>
+  <img src="main/example/screenshots/Screenshot_2025-06-14-19-33-39-24_57be3378ac0cedb7a6848329a3b308c3.jpg" width="200"/>
 </p>
 
 ---
@@ -50,10 +50,11 @@ A robust Flutter plugin designed for universal file downloading, offering reliab
 - **iOS:** Downloads are performed on the main thread (no background/foreground download support yet).
 - **Other platforms:** Plugin will not throw, but only Android is fully supported at this time.
 
-> **Minimum Requirements:**  
-> - Flutter: 3.10 or above  
-> - Dart: 3.0 or above  
-> - Android: minSdkVersion 21+  
+> **Minimum Requirements:**
+>
+> - Flutter: 3.10 or above
+> - Dart: 3.0 or above
+> - Android: minSdkVersion 21+
 > - iOS: Not officially supported for background/foreground downloads
 
 ---
@@ -501,22 +502,22 @@ Future<void> cancelCurrentDownload() async {
 
 ### FlutterUniversalDownloader Class
 
-| Method / Getter | Description | Parameters | Returns |
-|---|---|---|---|
-| `static Future<bool> foregroundDownload(String url, {String? fileName})` | Initiate a file download via foreground service on Android. | `url` (String, required): file URL<br>`fileName` (String, optional): name for saved file | `true` if the download request was sent to native; `false` otherwise |
-| `static Future<bool> cancelDownload()` | Cancel the currently active download. | None | `true` if cancellation request sent; `false` if no active download or failed |
-| `static Stream<DownloadProgress> get progressStream` | Broadcast stream emitting download progress and status. | None | Stream of `DownloadProgress` objects |
+| Method / Getter                                                          | Description                                                 | Parameters                                                                               | Returns                                                                      |
+| ------------------------------------------------------------------------ | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| `static Future<bool> foregroundDownload(String url, {String? fileName})` | Initiate a file download via foreground service on Android. | `url` (String, required): file URL<br>`fileName` (String, optional): name for saved file | `true` if the download request was sent to native; `false` otherwise         |
+| `static Future<bool> cancelDownload()`                                   | Cancel the currently active download.                       | None                                                                                     | `true` if cancellation request sent; `false` if no active download or failed |
+| `static Stream<DownloadProgress> get progressStream`                     | Broadcast stream emitting download progress and status.     | None                                                                                     | Stream of `DownloadProgress` objects                                         |
 
 **DownloadProgress Class**
 
-| Attribute | Type | Description |
-|---|---|---|
-| `status` | `DownloadStatus` | Current status (e.g., progress, completed, failed) |
-| `progress` | `int` | Download progress (0-100, valid if status is `progress`) |
-| `downloadedBytes` | `int` | Bytes downloaded so far |
-| `totalBytes` | `int` | Total file size in bytes (-1 if unknown) |
-| `fileName` | `String?` | Name of the file being downloaded |
-| `message` | `String?` | Optional message for failed/cancelled statuses |
+| Attribute         | Type             | Description                                              |
+| ----------------- | ---------------- | -------------------------------------------------------- |
+| `status`          | `DownloadStatus` | Current status (e.g., progress, completed, failed)       |
+| `progress`        | `int`            | Download progress (0-100, valid if status is `progress`) |
+| `downloadedBytes` | `int`            | Bytes downloaded so far                                  |
+| `totalBytes`      | `int`            | Total file size in bytes (-1 if unknown)                 |
+| `fileName`        | `String?`        | Name of the file being downloaded                        |
+| `message`         | `String?`        | Optional message for failed/cancelled statuses           |
 
 **DownloadStatus Enum**
 
@@ -561,6 +562,7 @@ flutter run
 **Symptom:** Downloads fail to start, or you see `ForegroundServiceStartNotAllowedException` on Android 13+.
 
 **Solution:**
+
 - Ensure `<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>` is in your manifest.
 - Request `Permission.notification` at runtime before `foregroundDownload()`.
 
@@ -569,6 +571,7 @@ flutter run
 **Symptom:** Fails with permission errors.
 
 **Solution:**
+
 - Ensure `<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />` is present.
 - Request `Permission.storage` at runtime for these Android versions.
 
@@ -577,6 +580,7 @@ flutter run
 **Symptom:** `DownloadStatus.failed` with `networkError` or `invalidParams`.
 
 **Solution:**
+
 - Double-check the download URL.
 - Verify device’s internet.
 - Test the URL in a browser.
@@ -586,6 +590,7 @@ flutter run
 **Symptom:** UI doesn’t update, or stops mid-download.
 
 **Solution:**
+
 - Ensure `StreamSubscription` is managed properly.
 - Add `onError`/`onDone` to your stream listener.
 - Check native logs (e.g., via `adb logcat`).
