@@ -10,9 +10,9 @@
 
 <!-- Replace the link below with your actual screenshot or GIF -->
 <p align="center">
-  <img src="main/example/screenshots/IMG_20250614_193823.jpg" width="200"/>
-  <img src="main/example/screenshots/Screenshot_2025-06-14-19-33-25-57_57be3378ac0cedb7a6848329a3b308c3.jpg" width="200"/>
-  <img src="main/example/screenshots/Screenshot_2025-06-14-19-33-39-24_57be3378ac0cedb7a6848329a3b308c3.jpg" width="200"/>
+  <img src="https://raw.githubusercontent.com/importUsernameDev/flutter_universal_downloader/refs/heads/main/main/example/screenshots/IMG_20250614_193823.jpg" width="200"/>
+  <img src="https://raw.githubusercontent.com/importUsernameDev/flutter_universal_downloader/main/main/example/screenshots/Screenshot_2025-06-14-19-33-39-24_57be3378ac0cedb7a6848329a3b308c3.jpg" width="200"/>
+  <img src="https://raw.githubusercontent.com/importUsernameDev/flutter_universal_downloader/main/main/example/screenshots/Screenshot_2025-06-14-19-33-25-57_57be3378ac0cedb7a6848329a3b308c3.jpg" width="200"/>
 </p>
 
 ---
