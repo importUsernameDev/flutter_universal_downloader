@@ -308,7 +308,7 @@ class _DownloaderPageState extends State<DownloaderPage> {
 
       // `downloadFile` starts the download, typically with a notification.
       // The actual progress updates are handled by the `_downloadProgressSubscription`.
-      final success = await FlutterUniversalDownloader.downloadFile(
+      final success = await FlutterUniversalDownloader.foregroundDownload(
         url,
         fileName: fileName,
       );

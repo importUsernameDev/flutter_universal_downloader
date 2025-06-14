@@ -163,7 +163,7 @@ class FlutterUniversalDownloader {
   ///         communication with the native platform (e.g., native method not found,
   ///         missing manifest permissions on Android *before* request, etc.).
   ///         This exception should be caught and handled by the calling Dart code.
-  static Future<bool> downloadFile(String url, {String? fileName}) async {
+  static Future<bool> foregroundDownload(String url, {String? fileName}) async {
     try {
       final bool? result = await _methodChannel.invokeMethod<bool>(
         'foregroundDownload',
