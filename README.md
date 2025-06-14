@@ -325,17 +325,21 @@ Future<void> cancelCurrentDownload() async {
 //   child: Text('Cancel Download'),
 // ),
 ```
+
 ## ⚙️ API Reference / Attributes
+
 `FlutterUniversalDownloader` Class
 The main class providing the plugin's functionality.
 
 #### Methods:
+
 `static Future<bool> foregroundDownload(String url, {String? fileName})`
 Initiates a file download.
+
 - `url`: The direct URL of the file to download (e.g., `https://example.com/file.jpg`).
 - `fileName` (optional): The desired name for the downloaded file. If `null` or omitted, the native platform might infer a filename from the URL or - generate a unique one.
 
-Returns: `true` if the download request was successfully sent to the native platform; `false` otherwise (e.g., invalid parameters, service not available). 
+Returns: `true` if the download request was successfully sent to the native platform; `false` otherwise (e.g., invalid parameters, service not available).
 Note: `true` only indicates initiation, not completion.
 
 `static Future<bool> cancelDownload()`
@@ -343,6 +347,7 @@ Requests the cancellation of the currently active download operation.
 Returns: true if a cancellation request was successfully sent; false if no download was active or the cancellation command failed.
 
 #### Streams:
+
 `static Stream<DownloadProgress> get progressStream`
 A broadcast stream that emits DownloadProgress objects as the download progresses or changes status. Subscribe to this stream to receive real-time updates and final results.
 
@@ -350,6 +355,7 @@ A broadcast stream that emits DownloadProgress objects as the download progresse
 Represents the current state of a download operation.
 
 #### Attributes:
+
 - `status`: (`DownloadStatus`) The current status of the download (e.g., `progress`, `completed`, `failed`).
 - `progress`: (`int`) The download progress as a percentage (0-100). Only valid when `status` is `DownloadStatus.progress`.
 - `downloadedBytes`: (`int`) The number of bytes downloaded so far.
@@ -370,8 +376,8 @@ Defines the possible states of a download operation.
 - `generalError`: A general, unclassified error occurred during download.
 - `unknown`: An unknown status.
 
-
 ## 🔬 Example
+
 A comprehensive and runnable example application demonstrating the full capabilities of `flutter_universal_downloader` is available in the `example/` directory of this repository. This example includes:
 
 Dynamic Android permission handling (using `permission_handler` and `device_info_plus`).
@@ -382,13 +388,13 @@ To run the example:
 
 1.Clone the flutter_universal_downloader repository:
 
-``` shell
-git clone [https://github.com/YOUR_GITHUB_USERNAME/flutter_universal_downloader.git](https://github.com/importUsernameDev/flutter_universal_downloader.git)
+```shell
+git clone [https://github.com/importUsernameDev/flutter_universal_downloader.git](https://github.com/importUsernameDev/flutter_universal_downloader.git)
 ```
 
 2.Navigate into the example/ directory:
 
-``` shell
+```shell
 cd flutter_universal_downloader/example
 ```
 
@@ -400,12 +406,14 @@ flutter pub get
 
 4.Run the application on a connected Android device or emulator (recommended to experience foreground service functionality):
 
-``` shell
+```shell
 flutter run
 ```
+
 You can also run it on other platforms, but the background download/foreground service features are specific to Android.
 
 ## ❓ Troubleshooting
+
 Here are solutions to some common issues you might encounter:
 
 #### Download Does Not Start / Foreground Service Error on Android 13+
@@ -414,9 +422,9 @@ Symptom: Downloads fail to start, or you see errors related to `ForegroundServic
 Cause: Android 13+ requires the `POST_NOTIFICATIONS` permission to display notifications from foreground services. Without this, the service cannot run correctly.
 
 Solution:
-- Ensure you have `<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>` in your `AndroidManifest.xml`.
-Implement runtime permission request for `Permission.notification` in your Dart code using `permission_handler` before calling `foregroundDownload()`. (Refer to "2.2. Runtime Permissions" section).
 
+- Ensure you have `<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>` in your `AndroidManifest.xml`.
+  Implement runtime permission request for `Permission.notification` in your Dart code using `permission_handler` before calling `foregroundDownload()`. (Refer to "2.2. Runtime Permissions" section).
 
 #### Download Fails with Storage/Permission Denied on Older Android (API <= 28)
 
@@ -453,8 +461,8 @@ Add comprehensive `onError` and `onDone` callbacks to your `progressStream.liste
 Check native Android logs (using `adb logcat`) for any errors from the `FlutterUniversalDownloaderService`.
 
 ## 🤝 Contributing
+
 Contributions are warmly welcomed and greatly appreciated! If you have suggestions for improvements, find a bug, or wish to add new features, please don't hesitate to:
 
 - Open an Issue: Describe the bug or feature request in detail. Provide clear steps to reproduce any bugs, if applicable.
 - Submit a Pull Request: Fork the repository, make your changes, and create a pull request. Please ensure your code adheres to the project's style, includes relevant tests for new functionality, and passes all existing tests.
-
