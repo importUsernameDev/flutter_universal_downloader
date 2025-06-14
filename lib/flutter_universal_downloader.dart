@@ -173,7 +173,6 @@ class FlutterUniversalDownloader {
           false; // Safely return false if the native result is null.
     } on PlatformException catch (e) {
       // It's good practice to log platform exceptions for debugging purposes.
-      // TODO: Replace 'print' with a proper logging framework (e.g., `logger` package) for production builds.
       print(
         "FlutterUniversalDownloader: Failed to start foreground download: '${e.code}' - ${e.message}.",
       );
@@ -181,9 +180,8 @@ class FlutterUniversalDownloader {
       rethrow;
     } catch (e) {
       // Catch any unexpected Dart-level errors that might occur before or during the platform call.
-      // TODO: Replace 'print' with a proper logging framework.
       print(
-        "FlutterUniversalDownloader: An unexpected error occurred while calling foregroundDownload: $e",
+        'FlutterUniversalDownloader: An unexpected error occurred while calling foregroundDownload: $e',
       );
       rethrow;
     }
@@ -219,7 +217,7 @@ class FlutterUniversalDownloader {
     } catch (e) {
       // Catch any unexpected Dart-level errors during the cancellation attempt.
       print(
-        "FlutterUniversalDownloader: An unexpected error occurred while calling cancelDownload: $e",
+        'FlutterUniversalDownloader: An unexpected error occurred while calling cancelDownload: $e',
       );
       rethrow;
     }
