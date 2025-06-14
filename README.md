@@ -128,6 +128,9 @@ The plugin provides a `progressStream` that emits `DownloadProgress` objects as 
 Recommended Setup in a `StatefulWidget`:
 
 ```dart
+import 'dart:async'; // Required for StreamSubscription
+import 'dart:math' as math; // Required for the _formatBytes helper (logBase and pow)
+
 class MyDownloadScreen extends StatefulWidget {
   @override
   _MyDownloadScreenState createState() => _MyDownloadScreenState();
@@ -150,20 +153,20 @@ class _MyDownloadScreenState extends State<MyDownloadScreen> {
               _currentDownloadProgress = progress.totalBytes > 0
                   ? progress.downloadedBytes / progress.totalBytes
                   : 0.0;
-              _downloadStatusMessage = 'Downloading "${progress.fileName}"... <span class="math-inline">\{progress\.progress\}% '
-'\(</span>{_formatBytes(progress.downloadedBytes)} / <span class="math-inline">\{\_formatBytes\(progress\.totalBytes\)\}\)';
-break;
-case DownloadStatus\.completed\:
-\_currentDownloadProgress \= 1\.0; // Ensure 100% on completion
-\_downloadStatusMessage \= '✅ Download of "</span>{progress.fileName}" completed!';
+              _downloadStatusMessage = 'Downloading "${progress.fileName}"... ${progress.progress}% '
+                                       '(${_formatBytes(progress.downloadedBytes)} / ${_formatBytes(progress.totalBytes)})';
+              break;
+            case DownloadStatus.completed:
+              _currentDownloadProgress = 1.0; // Ensure 100% on completion
+              _downloadStatusMessage = '✅ Download of "${progress.fileName}" completed!';
               break;
             case DownloadStatus.failed:
               _currentDownloadProgress = 0.0; // Reset progress on failure
-              _downloadStatusMessage = '❌ Download of "${progress.fileName ?? 'file'}" failed: <span class="math-inline">\{progress\.message\}';
-break;
-case DownloadStatus\.cancelled\:
-\_currentDownloadProgress \= 0\.0; // Reset progress on cancellation
-\_downloadStatusMessage \= '🚫 Download of "</span>{progress.fileName ?? 'file'}" cancelled.';
+              _downloadStatusMessage = '❌ Download of "${progress.fileName ?? 'file'}" failed: ${progress.message}';
+              break;
+            case DownloadStatus.cancelled:
+              _currentDownloadProgress = 0.0; // Reset progress on cancellation
+              _downloadStatusMessage = '🚫 Download of "${progress.fileName ?? 'file'}" cancelled.';
               break;
             case DownloadStatus.invalidParams:
               _downloadStatusMessage = '⚠️ Download failed: Invalid parameters provided.';
@@ -184,46 +187,49 @@ case DownloadStatus\.cancelled\:
       onError: (error) {
         // Handle errors emitted by the stream itself (e.g., internal plugin issues).
         setState(() {
-          _downloadStatusMessage = 'Critical Stream Error: <span class="math-inline">error';
-\_currentDownloadProgress \= 0\.0;
-\}\);
-\},
-onDone\: \(\) \{
-print\('Download progress stream has closed\.'\);
-\}
-\);
-\}
-@override
-void dispose\(\) \{
-// IMPORTANT\: Always cancel your stream subscription to prevent memory leaks\!
-\_downloadProgressSubscription?\.cancel\(\);
-super\.dispose\(\);
-\}
-// \-\-\- Example UI Snippet \(assuming these state variables exist\) \-\-\-
-// @<48\>override
-// Widget build\(BuildContext context\) \{
-//   return Scaffold\(
-//     appBar\: AppBar\(title\: Text\('File Downloader'\)\),
-//     body\: Center\(
-//       child\: Column\(
-//         mainAxisAlignment\: MainAxisAlignment\.center,
-//         children\:</48\> \[
-//           LinearProgressIndicator\(value\: \_currentDownloadProgress\),
-//           SizedBox\(height\: 10\),
-//           Text\(\_downloadStatusMessage\),
-//           // \.\.\. Add buttons for initiateDownload and cancelCurrentDownload
-//         \],
-//       \),
-//     \),
-//   \);
-// \}
-// \-\-\- Helper function \(can be a top\-level function or method\) \-\-\-
-String \_formatBytes\(int bytes\) \{
-if \(bytes <\= 0\) return '0 B';
-const units \= \['B', 'KB', 'MB', 'GB', 'TB'\];
-final i \= \(bytes\.toDouble\(\)\.abs\(\)\.logBase\(1024\)\)\.floor\(\)\.toInt\(\);
-final clampedIndex \= \(i < units\.length ? i \: units\.length \- 1\);
-return '</span>{(bytes / (1024.0.pow(clampedIndex))).toStringAsFixed(2)} ${units[clampedIndex]}';
+          _downloadStatusMessage = 'Critical Stream Error: $error';
+          _currentDownloadProgress = 0.0;
+        });
+      },
+      onDone: () {
+        print('Download progress stream has closed.');
+      }
+    );
+  }
+
+  @override
+  void dispose() {
+    // IMPORTANT: Always cancel your stream subscription to prevent memory leaks!
+    _downloadProgressSubscription?.cancel();
+    super.dispose();
+  }
+
+  // --- Example UI Snippet (assuming these state variables exist) ---
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     appBar: AppBar(title: Text('File Downloader')),
+  //     body: Center(
+  //       child: Column(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           LinearProgressIndicator(value: _currentDownloadProgress),
+  //           SizedBox(height: 10),
+  //           Text(_downloadStatusMessage),
+  //           // ... Add buttons for initiateDownload and cancelCurrentDownload
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  // --- Helper function (can be a top-level function or method) ---
+  String _formatBytes(int bytes) {
+    if (bytes <= 0) return '0 B';
+    const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+    final i = (bytes.toDouble().abs().logBase(1024)).floor().toInt();
+    final clampedIndex = (i < units.length ? i : units.length - 1);
+    return '${(bytes / (1024.0.pow(clampedIndex))).toStringAsFixed(2)} ${units[clampedIndex]}';
   }
 }
 
